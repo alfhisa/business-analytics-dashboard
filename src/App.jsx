@@ -366,11 +366,12 @@ export default function App() {
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
                   <div className="grid grid-cols-1 gap-4">
                     {[
-                      { title: "Health Check", text: "DAU and revenue are relatively healthy, showing consistent growth." },
-                      { title: "The Turning Point", text: "Margin starts declining significantly after Day 60." },
-                      { title: "The Root Cause", text: "Heavy discounting and rising operational costs are driving the margin decline." },
-                      { title: "Risk Profile", text: "Branches like Kemang are at risk of becoming low-profit or loss-making." },
-                      { title: "Recommendation", text: "Reduce aggressive discounts, optimize operational costs, and review branch performance." }
+                      { title: "Overall Trends", text: "DAU and revenue show steady growth, but the profit margin is experiencing a significant downward trend." },
+                      { title: "The Turning Point", text: "The margin decline began around Day 60, coinciding with a sharp increase in discounts and operational costs." },
+                      { title: "Platform Insight", text: "Android drives higher volume (20% more DAU), while iOS users contribute a higher average order value (AOV)." },
+                      { title: "Risk Profile", text: "The Kemang branch is at high risk, performing at only 70% of the average and likely to face net losses first." },
+                      { title: "Future Outlook", text: "If trends continue, profitability will vanish, leading to cash flow crises and potential branch closures." },
+                      { title: "Final Recommendation", text: "Optimize discount strategies, control rising operational costs, and target high-value iOS users more effectively." }
                     ].map((insight, i) => (
                       <div key={i} className="bg-white/5 p-4 rounded-2xl border border-white/10">
                         <h4 className="text-orange-400 font-bold text-sm uppercase tracking-wider mb-1">{insight.title}</h4>
