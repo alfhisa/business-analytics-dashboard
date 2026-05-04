@@ -240,9 +240,9 @@ export default function App() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis dataKey="displayDate" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} minTickGap={30} />
               <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} tickFormatter={(val) => `${(val / 1000000).toFixed(0)}jt`} />
-              <Tooltip 
+              <Tooltip
                 formatter={(val) => formatCurrency(val)}
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
               />
               <Legend verticalAlign="top" height={36} />
               <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} dot={false} name="Revenue" />
@@ -258,9 +258,9 @@ export default function App() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis dataKey="displayDate" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} minTickGap={30} />
               <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
-              <Tooltip 
+              <Tooltip
                 formatter={(val, name) => name.includes('%') ? [`${val.toFixed(1)}%`, name] : [formatCurrency(val), name]}
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
               />
               <Legend verticalAlign="top" height={36} />
               <Line type="monotone" dataKey="discount" stroke="#f59e0b" strokeWidth={2} dot={false} name="Discount (Rp)" />
@@ -348,7 +348,7 @@ export default function App() {
                 <div className="bg-orange-500 p-2 rounded-xl">
                   <Lightbulb className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-xl font-bold">Teaching Insights</h2>
+                <h2 className="text-xl font-bold">Analytics Insights</h2>
               </div>
 
               {!showInsights ? (
@@ -358,7 +358,7 @@ export default function App() {
                     onClick={() => setShowInsights(true)}
                     className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg shadow-orange-900/20 flex items-center gap-2 group"
                   >
-                    Reveal Teaching Insights
+                    Reveal Analytics Insights
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
