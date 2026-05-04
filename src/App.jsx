@@ -4,7 +4,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import {
-  LayoutDashboard, Users, ShoppingBag, DollarSign, TrendingDown,
+  LayoutDashboard, Users, ShoppingBag, Banknote, TrendingDown,
   HelpCircle, Lightbulb, ChevronRight, Filter, Calendar
 } from 'lucide-react';
 import { generateData } from './data';
@@ -15,6 +15,13 @@ import { twMerge } from 'tailwind-merge';
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
+
+const formatCurrency = (val) => {
+  if (val >= 1000000000) return `Rp ${(val / 1000000000).toFixed(2)} M`;
+  if (val >= 1000000) return `Rp ${(val / 1000000).toFixed(1)} jt`;
+  if (val >= 1000) return `Rp ${(val / 1000).toFixed(0)} rb`;
+  return `Rp ${val}`;
+};
 
 const data = generateData();
 const branches = [...new Set(data.map(d => d.branch))];
@@ -77,7 +84,7 @@ export default function App() {
 
     return {
       dau: totalDAU.toLocaleString(),
-      revenue: `$${(totalRevenue / 1000).toFixed(1)}k`,
+      revenue: `Rp ${(totalRevenue / 1000000000).toFixed(2)} M`,
       orders: totalOrders.toLocaleString(),
       margin: `${avgMargin.toFixed(1)}%`
     };
@@ -203,7 +210,7 @@ export default function App() {
         {/* KPIs */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <KPICard title="Total DAU" value={stats.dau} icon={Users} color="bg-indigo-500" trend={12.5} />
-          <KPICard title="Total Revenue" value={stats.revenue} icon={DollarSign} color="bg-emerald-500" trend={8.2} />
+          <KPICard title="Total Revenue" value={stats.revenue} icon={Banknote} color="bg-emerald-500" trend={8.2} />
           <KPICard title="Total Orders" value={stats.orders} icon={ShoppingBag} color="bg-orange-500" trend={10.1} />
           <KPICard title="Avg. Margin" value={stats.margin} icon={TrendingDown} color="bg-rose-500" trend={-4.3} />
         </section>
@@ -232,11 +239,14 @@ export default function App() {
             <LineChart data={dailyTrend}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis dataKey="displayDate" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} minTickGap={30} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
-              <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} tickFormatter={(val) => `${(val / 1000000).toFixed(0)}jt`} />
+              <Tooltip 
+                formatter={(val) => formatCurrency(val)}
+                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+              />
               <Legend verticalAlign="top" height={36} />
-              <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="profit" stroke="#f43f5e" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} dot={false} name="Revenue" />
+              <Line type="monotone" dataKey="profit" stroke="#f43f5e" strokeWidth={2} dot={false} name="Profit" />
             </LineChart>
           </ChartContainer>
         </div>
@@ -248,9 +258,12 @@ export default function App() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis dataKey="displayDate" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} minTickGap={30} />
               <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
-              <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+              <Tooltip 
+                formatter={(val, name) => name.includes('%') ? [`${val.toFixed(1)}%`, name] : [formatCurrency(val), name]}
+                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
+              />
               <Legend verticalAlign="top" height={36} />
-              <Line type="monotone" dataKey="discount" stroke="#f59e0b" strokeWidth={2} dot={false} name="Discount ($)" />
+              <Line type="monotone" dataKey="discount" stroke="#f59e0b" strokeWidth={2} dot={false} name="Discount (Rp)" />
               <Line type="monotone" dataKey="avgMargin" stroke="#6366f1" strokeWidth={2} dot={false} name="Margin (%)" />
             </LineChart>
           </ChartContainer>
@@ -289,13 +302,14 @@ export default function App() {
           <ChartContainer title="Branch Performance" description="Profit ranking by branch">
             <BarChart data={branchData} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
-              <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
+              <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} tickFormatter={(val) => `${(val / 1000000).toFixed(0)} jt`} />
               <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} width={100} />
               <Tooltip
+                formatter={(value) => formatCurrency(value)}
                 cursor={{ fill: '#f8fafc' }}
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
               />
-              <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]} barSize={24} name="Total Profit ($)" />
+              <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]} barSize={24} name="Total Profit (Rp)" />
             </BarChart>
           </ChartContainer>
         </div>

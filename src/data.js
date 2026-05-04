@@ -25,7 +25,7 @@ export const generateData = () => {
         const conversionRate = 0.05 + Math.random() * 0.03;
         const orders = Math.floor(dau * conversionRate);
         
-        let avgOrderValue = platform === 'iOS' ? 45 + Math.random() * 10 : 35 + Math.random() * 10;
+        let avgOrderValue = platform === 'iOS' ? 65000 + Math.random() * 15000 : 45000 + Math.random() * 15000;
         let revenue = orders * avgOrderValue;
 
         // Discount increases after day 60
